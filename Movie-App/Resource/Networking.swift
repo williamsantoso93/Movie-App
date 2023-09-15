@@ -67,7 +67,8 @@ class Networking {
 }
 
 class Fetcher {
-    static private let baseUrl: String = "https://api.themoviedb.org/3"
+    static let baseUrl: String = "https://api.themoviedb.org/3"
+    static var imageBaseUrl: String = "https://image.tmdb.org/t/p/"
     
     static func getNowPlayingMovieList(page: Int = 1) async throws -> MovieList {
         let url = "\(baseUrl)/movie/now_playing"
@@ -139,6 +140,21 @@ class Fetcher {
         case .failure(let error):
             throw error
         }
+    }
+    
+    static func getMovieImages(id: Int) async throws -> MovieImages {
+        let url = "\(baseUrl)/movie/\(id)/images"
+        let params: [String: String] = [
+            "include_image_language": "en",
+            "language": "en",
+        ]
         
+        let result: Result<MovieImages, RequestError> = await Networking.sendRequest(url: url, parameters: params)
+        switch result {
+        case .success(let data):
+            return data
+        case .failure(let error):
+            throw error
+        }
     }
 }
