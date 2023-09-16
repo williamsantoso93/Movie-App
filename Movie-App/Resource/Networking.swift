@@ -157,4 +157,20 @@ class Fetcher {
             throw error
         }
     }
+    
+    static func searchMovies(by keyword: String, page: Int = 1) async throws -> MovieList {
+        let url = "\(baseUrl)/search/movie"
+        let params: [String: String] = [
+            "query": keyword,
+            "page": "\(page)",
+        ]
+        
+        let result: Result<MovieList, RequestError> = await Networking.sendRequest(url: url, parameters: params)
+        switch result {
+        case .success(let data):
+            return data
+        case .failure(let error):
+            throw error
+        }
+    }
 }

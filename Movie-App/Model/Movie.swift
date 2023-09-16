@@ -24,20 +24,22 @@ struct MovieList: Codable {
 struct Movie: Codable, Identifiable {
     var id: Int
     var adult: Bool
-    var backdropPath: String
-    var backdropImageUrl: String {
-        "\(Fetcher.imageBaseUrl)/w780\(backdropPath)"
+    var backdropPath: String?
+    var backdropImageUrl: String? {
+        guard let backdropPath = backdropPath else { return nil }
+        return "\(Fetcher.imageBaseUrl)/w780\(backdropPath)"
     }
-    var originalLanguage: String
-    var originalTitle, overview: String
-    var popularity: Double
-    var posterPath, releaseDate, title: String
-    var posterImageUrl: String {
-        "\(Fetcher.imageBaseUrl)/w342\(posterPath)"
+    var originalLanguage: String?
+    var originalTitle, overview: String?
+    var popularity: Double?
+    var posterPath, releaseDate, title: String?
+    var posterImageUrl: String? {
+        guard let posterPath = posterPath else { return nil }
+        return "\(Fetcher.imageBaseUrl)/w342\(posterPath)"
     }
-    var video: Bool
-    var voteAverage: Double
-    var voteCount: Int
+    var video: Bool?
+    var voteAverage: Double?
+    var voteCount: Int?
     var image: MovieImages? = nil
     
     enum CodingKeys: String, CodingKey {
@@ -57,31 +59,21 @@ struct Movie: Codable, Identifiable {
 
 // MARK: - backdrops
 struct MovieImages: Codable {
-    var backdrops: [MovieImageBackdrop]
+    var backdrops: [MovieImageBackdrop]?
     var id: Int
-    var logos, posters: [MovieImagePoster]
+    var logos, posters: [MovieImagePoster]?
 }
 
 // MARK: - MovieImage
 struct MovieImageBackdrop: Codable, Hashable {
-    var aspectRatio: Double
-    var height: Int
-    var iso639_1: String?
-    var filePath: String
-    var imageUrl: String {
-        "\(Fetcher.imageBaseUrl)/w780\(filePath)"
+    var filePath: String?
+    var imageUrl: String? {
+        guard let filePath = filePath else { return nil }
+        return "\(Fetcher.imageBaseUrl)/w780\(filePath)"
     }
-    var voteAverage: Double
-    var voteCount, width: Int
     
     enum CodingKeys: String, CodingKey {
-        case aspectRatio = "aspect_ratio"
-        case height
-        case iso639_1 = "iso_639_1"
         case filePath = "file_path"
-        case voteAverage = "vote_average"
-        case voteCount = "vote_count"
-        case width
     }
 }
 struct MovieImagePoster: Codable, Hashable {

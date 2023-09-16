@@ -15,14 +15,18 @@ struct ContentView: View {
                     Label("Movie", systemImage: "play.rectangle")
                 }
             
-            Text("Search")
+            SearchScreen()
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+                    Label("Search", systemImage: "magnifyingglass.circle.fill")
                 }
-            Text("Saved")
+            
+            FavoritesScreen()
                 .tabItem {
-                    Label("Saved", systemImage: "bookmark.circle")
+                    Label("Favorites", systemImage: "star.circle.fill")
                 }
+        }
+        .onAppear {
+            UITabBar.appearance().backgroundColor = UIColor.systemBackground
         }
     }
 }

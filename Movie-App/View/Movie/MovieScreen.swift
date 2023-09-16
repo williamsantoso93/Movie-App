@@ -7,43 +7,78 @@
 
 import SwiftUI
 
+enum MovieListType: String, CaseIterable {
+    case nowPlaying = "Now Playing"
+    case popular = "Popular"
+    case topRated = "Top Rated"
+    case upcoming = "Upcoming"
+}
+
 struct MovieScreen: View {
     @State private var movies: [Movie] = []
-    let columns: [GridItem] = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16),
-    ]
+    
+    @State private var type: MovieListType = .nowPlaying
+    @State private var page: Int = 1
     
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(movies.indices, id: \.self) { index in
-                        NavigationLink {
-                            MovieDetailScreen(movie: $movies[index])
-                        } label: {
-                            MovieRowView(movie: movies[index])
-                        }
-                    }
+            Picker("", selection: $type) {
+                ForEach(MovieListType.allCases, id: \.self) { type in
+                    Text(type.rawValue)
                 }
-                .padding(16)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+            .onChange(of: type) { newValue in
+                page = 1
+                Task {
+                    await fetchMovies()
+                }
+            }
+            
+            MovieListView(movies: $movies) {
+                page += 1
+                Task {
+                    await fetchMovies()
+                }
             }
             .navigationTitle("Movie")
             .refreshable {
+                page = 1
                 Task {
-//                    await viewModel.fetchNewList()
+                    await fetchMovies()
                 }
             }
             .task {
-                do {
-                    let movies = try await Fetcher.getNowPlayingMovieList()
-                    Task { @MainActor in
-                        self.movies = movies.results
-                    }
-                } catch {
-                    
-                }
+                guard ProcessInfo.processInfo.environment["isTest"] != "1" else { return }
+                await fetchMovies()
             }
+        }
+    }
+    
+    func fetchMovies() async {
+        do {
+            let list: MovieList
+            
+            switch type {
+            case .nowPlaying:
+                list = try await Fetcher.getNowPlayingMovieList(page: page)
+            case .popular:
+                list = try await Fetcher.getPopularMovieList(page: page)
+            case .topRated:
+                list = try await Fetcher.getTopRatedMovieList(page: page)
+            case .upcoming:
+                list = try await Fetcher.getUpcomingMovieList(page: page)
+            }
+            
+            Task { @MainActor in
+                if page == 1 {
+                    movies.removeAll()
+                }
+                movies += list.results
+            }
+        } catch {
+            
         }
     }
 }

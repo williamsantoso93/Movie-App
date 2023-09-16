@@ -12,12 +12,20 @@ struct MovieRowView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            AsyncImage(url: URL(string: movie.posterImageUrl)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                ProgressView()
+            Group {
+                if let imageUrl = movie.posterImageUrl {
+                    AsyncImage(url: URL(string: imageUrl)) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                } else {
+                    Image(systemName: "photo")
+                        .font(.largeTitle)
+                        .foregroundColor(.primary)
+                }
             }
             .frame(height: 225)
             
@@ -27,14 +35,18 @@ struct MovieRowView: View {
                         Image(systemName: "star.fill")
                             .foregroundColor(.yellow)
                         
-                        Text(movie.voteAverage.formatted())
+                        if let voteAverage = movie.voteAverage {
+                            Text(voteAverage.formatted())
+                        }
                     }
                     .font(.caption)
                     
-                    Text(movie.title)
-                        .font(.footnote)
-                        .bold()
-                        .lineLimit(1)
+                    if let title = movie.title {
+                        Text(title)
+                            .font(.footnote)
+                            .bold()
+                            .lineLimit(1)
+                    }
                 }
                 .padding(6)
                 .foregroundColor(.primary)

@@ -33,7 +33,6 @@ final class NetworkingTest: XCTestCase {
         XCTAssertTrue(!data.results.isEmpty)
     }
     
-    
     func test_MovieDetail_GivenCorrectMovieId_ShouldGetMovieDetailSucceccfully() async throws {
         let movieId = 123
         let data = try await Fetcher.getMovieDetail(id: movieId)
@@ -53,7 +52,6 @@ final class NetworkingTest: XCTestCase {
     func test_MovieImages_GivenCorrectMovieId_ShouldGetMovieImagesSucceccfully() async throws {
         let movieId = 615656
         let data = try await Fetcher.getMovieImages(id: movieId)
-        print(data)
         
         XCTAssertEqual(movieId, data.id)
     }
@@ -65,5 +63,20 @@ final class NetworkingTest: XCTestCase {
         } catch {
             XCTAssertNotNil(error)
         }
+    }
+    
+    func test_MovieSearch_GivenCorrectQuery_ShouldGetMovieListSucceccfully() async throws {
+        let keyword = "meg 2"
+        let data = try await Fetcher.searchMovies(by: keyword)
+        
+        XCTAssertTrue(data.results.contains(where: { movie in
+            (movie.title ?? "").lowercased().contains(keyword)
+        }))
+    }
+    
+    func test_MovieSearch_GivenIncorrectQuery_ShouldMovieListBeEmpty() async throws {
+        let data = try await Fetcher.searchMovies(by: "!@#$%^&*")
+        
+        XCTAssertTrue(data.results.isEmpty)
     }
 }
