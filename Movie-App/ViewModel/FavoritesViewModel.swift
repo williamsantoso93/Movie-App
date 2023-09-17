@@ -24,7 +24,7 @@ class FavoritesViewModel: BaseViewModel {
         return movies.filter { movie in
             guard let title = movie.title else { return false }
             
-            return (movie.title ?? "").lowercased().contains(search.lowercased())
+            return title.lowercased().contains(search.lowercased())
         }
     }
     @Published var search: String = ""
