@@ -15,70 +15,38 @@ enum MovieListType: String, CaseIterable {
 }
 
 struct MovieScreen: View {
-    @State private var movies: [Movie] = []
-    
-    @State private var type: MovieListType = .nowPlaying
-    @State private var page: Int = 1
+    @StateObject private var viewModel: MovieListViewModel = MovieListViewModel()
     
     var body: some View {
         NavigationStack {
-            Picker("", selection: $type) {
+            Picker("", selection: $viewModel.type) {
                 ForEach(MovieListType.allCases, id: \.self) { type in
                     Text(type.rawValue)
                 }
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
-            .onChange(of: type) { newValue in
-                page = 1
+            .onChange(of: viewModel.type) { newValue in
                 Task {
-                    await fetchMovies()
+                    await viewModel.fetchMovies()
                 }
             }
             
-            MovieListView(movies: $movies) {
-                page += 1
+            MovieListView(movies: $viewModel.movies) {
                 Task {
-                    await fetchMovies()
+                    await viewModel.fetchMovies(isNext: true)
                 }
             }
             .navigationTitle("Movie")
             .refreshable {
-                page = 1
                 Task {
-                    await fetchMovies()
+                    await viewModel.fetchMovies()
                 }
             }
             .task {
-                guard ProcessInfo.processInfo.environment["isTest"] != "1" else { return }
-                await fetchMovies()
+                guard ProcessInfo.processInfo.environment["isTest"] != "1" && !viewModel.movies.isEmpty else { return }
+                await viewModel.fetchMovies()
             }
-        }
-    }
-    
-    func fetchMovies() async {
-        do {
-            let list: MovieList
-            
-            switch type {
-            case .nowPlaying:
-                list = try await Fetcher.getNowPlayingMovieList(page: page)
-            case .popular:
-                list = try await Fetcher.getPopularMovieList(page: page)
-            case .topRated:
-                list = try await Fetcher.getTopRatedMovieList(page: page)
-            case .upcoming:
-                list = try await Fetcher.getUpcomingMovieList(page: page)
-            }
-            
-            Task { @MainActor in
-                if page == 1 {
-                    movies.removeAll()
-                }
-                movies += list.results
-            }
-        } catch {
-            
         }
     }
 }

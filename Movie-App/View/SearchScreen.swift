@@ -8,59 +8,39 @@
 import SwiftUI
 
 struct SearchScreen: View {
-    @State private var movies: [Movie] = []
-    
-    @State private var search: String = ""
-    @State private var page: Int = 1
+    @StateObject private var viewModel: SearchViewModel = SearchViewModel()
     
     var body: some View {
         NavigationStack {
-            MovieListView(movies: $movies) {
+            MovieListView(movies: $viewModel.movies) {
                 Task {
-                    page += 1
-                    await fetchMovies()
+                    await viewModel.fetchMovies(isNext: true)
                 }
             }
             .overlay {
-                if search.isEmpty && movies.isEmpty {
+                if viewModel.search.isEmpty && viewModel.movies.isEmpty {
                     Text("Please Input search")
-                } else if !search.isEmpty && movies.isEmpty {
-                    Text("There is no \"\(search)\"")
+                } else if !viewModel.search.isEmpty && viewModel.movies.isEmpty {
+                    Text("There is no \"\(viewModel.search)\"")
                 }
             }
             .navigationTitle("Search")
-            .searchable(text: $search)
+            .searchable(text: $viewModel.search)
             .onSubmit(of: .search) {
                 Task {
-                    await fetchMovies()
+                    await viewModel.fetchMovies()
                 }
             }
             .refreshable {
-                page = 1
                 Task {
-                    await fetchMovies()
+                    await viewModel.fetchMovies()
                 }
             }
             .task {
-                guard !search.isEmpty else { return }
+                guard !viewModel.search.isEmpty && !viewModel.movies.isEmpty else { return }
                 
-                await fetchMovies()
+                await viewModel.fetchMovies()
             }
-        }
-    }
-    
-    func fetchMovies() async {
-        do {
-            let list: MovieList = try await Fetcher.searchMovies(by: search, page: page)
-            
-            Task { @MainActor in
-                if page == 1 {
-                    movies.removeAll()
-                }
-                movies += list.results
-            }
-        } catch {
-            
         }
     }
 }
