@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct MovieDetailScreen: View {
-    @Binding var movie: Movie
+    @ObservedObject var viewModel: MovieViewModel
+    
+    private var movie: Movie {
+        viewModel.movie
+    }
     
     @State private var showStatus: Bool = false
-    @State private var isSaveSuccess: Bool = false
+    @State private var isSuccess: Bool = false
     
     var body: some View {
         ScrollView {
@@ -94,26 +98,29 @@ struct MovieDetailScreen: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Button {
-//                isSaveSuccess = movie.save()
+                if viewModel.isSaved {
+                    isSuccess = viewModel.delete()
+                } else {
+                    isSuccess = viewModel.save()
+                }
+                showStatus = true
             } label: {
-                Image(systemName: movie.isSaved ? "star.fill" : "star")
+                Image(systemName: viewModel.isSaved ? "star.fill" : "star")
                     .foregroundColor(.yellow)
             }
         }
         .sheet(isPresented: $showStatus) {
-            AlertSavedStatusBottomSheet(isSuccess: isSaveSuccess)
+            AlertSavedStatusBottomSheet(isSuccess: isSuccess)
+                .onTapGesture {
+                    showStatus = false
+                }
+        }
+        .onAppear {
+            viewModel.fetchSaveStatus()
         }
         .task {
             if movie.image == nil {
-                do {
-                    let movieImages = try await Fetcher.getMovieImages(id: movie.id)
-                    
-                    Task { @MainActor in
-                        movie.image = movieImages
-                    }
-                } catch {
-                    
-                }
+                await viewModel.fetchImages()
             }
         }
     }
@@ -123,7 +130,7 @@ struct MovieDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
         TabView {
             NavigationStack {
-                MovieDetailScreen(movie: .constant(Movie.fakeMovie()))
+                MovieDetailScreen(viewModel: MovieViewModel(movie: Movie.fakeMovie()))
             }
         }
     }

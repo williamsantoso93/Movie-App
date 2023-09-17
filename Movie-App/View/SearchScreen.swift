@@ -10,6 +10,8 @@ import SwiftUI
 struct SearchScreen: View {
     @StateObject private var viewModel: SearchViewModel = SearchViewModel()
     
+    @State private var onSearching: Bool = false
+    
     var body: some View {
         NavigationStack {
             MovieListView(movies: $viewModel.movies) {
@@ -18,15 +20,26 @@ struct SearchScreen: View {
                 }
             }
             .overlay {
-                if viewModel.search.isEmpty && viewModel.movies.isEmpty {
-                    Text("Please Input search")
-                } else if !viewModel.search.isEmpty && viewModel.movies.isEmpty {
-                    Text("There is no \"\(viewModel.search)\"")
+                VStack {
+                    if !viewModel.search.isEmpty && viewModel.movies.isEmpty && onSearching {
+                        Text("There is no \"\(viewModel.search)\"")
+                    }
+                    
+                    if viewModel.movies.isEmpty && !onSearching {
+                        Text("Please Input search")
+                    }
                 }
             }
             .navigationTitle("Search")
             .searchable(text: $viewModel.search)
+            .onChange(of: viewModel.search, perform: { newValue in
+                if newValue.isEmpty && onSearching {
+                    viewModel.movies.removeAll()
+                    onSearching = false
+                }
+            })
             .onSubmit(of: .search) {
+                onSearching = true
                 Task {
                     await viewModel.fetchMovies()
                 }
@@ -50,5 +63,11 @@ struct SearchScreen_Previews: PreviewProvider {
         TabView {
             SearchScreen()
         }
+    }
+}
+
+extension Bool {
+    func toString() -> String {
+        self ? "true":"false"
     }
 }

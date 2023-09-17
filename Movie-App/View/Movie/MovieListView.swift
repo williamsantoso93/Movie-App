@@ -22,7 +22,7 @@ struct MovieListView: View {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(movies.indices, id: \.self) { index in
                     NavigationLink {
-                        MovieDetailScreen(movie: $movies[index])
+                        MovieDetailScreen(viewModel: MovieViewModel(movie: movies[index]))
                     } label: {
                         MovieRowView(movie: movies[index])
                             .onAppear {

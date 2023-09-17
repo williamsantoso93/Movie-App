@@ -18,14 +18,13 @@ class FavoritesViewModel: BaseViewModel {
     
     @Published var movies: [Movie] = []
     
-    override init() {
-        super.init()
-        fetchMovies()
-    }
-    
     var displayedMovies: [Movie] {
-        movies.filter { movie in
-            (movie.title ?? "").lowercased().contains(search)
+        guard !search.isEmpty else { return movies }
+        
+        return movies.filter { movie in
+            guard let title = movie.title else { return false }
+            print(title,search, title.lowercased().contains(search.lowercased()))
+            return (movie.title ?? "").lowercased().contains(search.lowercased())
         }
     }
     @Published var search: String = ""
@@ -45,82 +44,6 @@ class FavoritesViewModel: BaseViewModel {
             self.movies = movies
         } catch {
             print(error.localizedDescription)
-        }
-    }
-}
-
-class ItemViewModel: ObservableObject {
-    @Published private var coreDataManager = CoreDataManager.shared
-    
-    private var viewContext: NSManagedObjectContext {
-        coreDataManager.viewContext
-    }
-    
-    @Published var items: [Item] = []
-    @Published var movies: [MovieItem] = []
-    
-    init() {
-        fetch()
-    }
-    
-    func fetch() {
-        let request = NSFetchRequest<Item>(entityName: "Item")
-        
-        do {
-            items = try viewContext.fetch(request)
-        }catch {
-            print("DEBUG: Some error occured while fetching")
-        }
-        
-    }
-    func fetchMovie() {
-        let request = NSFetchRequest<MovieItem>(entityName: "MovieItem")
-        
-        do {
-            movies = try viewContext.fetch(request)
-        }catch {
-            print("DEBUG: Some error occured while fetching")
-        }
-        
-    }
-    
-    func addMovieItem() {
-        withAnimation {
-            let newItem = MovieItem(context: viewContext)
-            
-            newItem.id = Int64(Movie.fakeMovie().id)
-            newItem.data = Movie.fakeMovie().toString()
-            
-            coreDataManager.save()
-            fetchMovie()
-        }
-    }
-    
-    func deleteMovieItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { movies[$0] }.forEach(viewContext.delete)
-            
-            coreDataManager.save()
-            fetch()
-        }
-    }
-    
-    func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            
-            coreDataManager.save()
-            fetch()
-        }
-    }
-    
-    func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-            
-            coreDataManager.save()
-            fetch()
         }
     }
 }

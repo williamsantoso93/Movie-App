@@ -18,24 +18,25 @@ class MovieViewModel: BaseViewModel {
     @Published var movie: Movie
     @Published var isSaved: Bool = false
     
+    private var moviesItem: [MovieItem] = []
+    
     init(movie: Movie) {
         self.movie = movie
-        
-        super.init()
-        
-        isSaved = fetchSaveStatus()
     }
     
-    func fetchSaveStatus() -> Bool {
+    func fetchSaveStatus() {
         let request = NSFetchRequest<MovieItem>(entityName: "MovieItem")
         
         guard
             let moviesItem = try? viewContext.fetch(request)
         else {
-            return false
+            isSaved = false
+            return
         }
         
-        return moviesItem.contains(where: { item in
+        self.moviesItem = moviesItem
+        
+        isSaved = moviesItem.contains(where: { item in
             Int(item.id) == movie.id
         })
     }
@@ -66,10 +67,36 @@ class MovieViewModel: BaseViewModel {
         
         do {
             try viewContext.save()
+            isSaved = true
+            
             return true
         } catch {
             print(error.localizedDescription)
+            isSaved = false
             return false
         }
     }
+    
+    //TODO: fix error when delete from movie screen
+    func delete() -> Bool {
+        guard let movieItem = moviesItem.first(where: { movieItem in
+            Int(movieItem.id) == movie.id
+        }) else { return false }
+        
+        viewContext.delete(movieItem)
+        coreDataManager.save()
+        
+        fetchSaveStatus()
+        
+        return true
+    }
+    
+    //func deleteMovieItems(offsets: IndexSet) {
+    //    withAnimation {
+    //        offsets.map { movies[$0] }.forEach(viewContext.delete)
+    //
+    //        coreDataManager.save()
+    //        fetch()
+    //    }
+    //    }
 }

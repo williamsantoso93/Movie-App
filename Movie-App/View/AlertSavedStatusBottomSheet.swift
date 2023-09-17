@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct AlertSavedStatusBottomSheet: View {
-    @Environment(\.dismiss) var dismiss
     var isSuccess: Bool
     
     var body: some View {

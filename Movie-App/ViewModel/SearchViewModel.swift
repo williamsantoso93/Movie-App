@@ -9,7 +9,7 @@ import Foundation
 
 class SearchViewModel: BaseViewModel {
     @Published var movies: [Movie] = []
-    @Published var search: String = "meg 2"
+    @Published var search: String = ""
     
     var page: Int = 1
     var totalPage: Int = 1

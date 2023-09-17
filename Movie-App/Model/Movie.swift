@@ -41,7 +41,6 @@ struct Movie: Codable, Identifiable {
     var voteAverage: Double?
     var voteCount: Int?
     var image: MovieImages? = nil
-    var isSaved: Bool = false
     
     enum CodingKeys: String, CodingKey {
         case adult

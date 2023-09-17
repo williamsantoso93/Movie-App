@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct Movie_AppApp: App {
-    let persistenceController = PersistenceController.shared
+    let coreDataManager = CoreDataManager.shared
 
     var body: some Scene {
         WindowGroup {
-            Temp()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            ContentView()
+                .environment(\.managedObjectContext, coreDataManager.viewContext)
         }
     }
 }

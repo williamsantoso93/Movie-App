@@ -15,7 +15,7 @@ final class NetworkingTest: XCTestCase {
         XCTAssertTrue(!data.results.isEmpty)
     }
     
-    func test_PopuparMovieList_ShouldGetMovieListSucceccfully() async throws {
+    func test_PopularMovieList_ShouldGetMovieListSucceccfully() async throws {
         let data = try await Fetcher.getPopularMovieList()
         
         XCTAssertTrue(!data.results.isEmpty)

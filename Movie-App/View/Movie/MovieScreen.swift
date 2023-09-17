@@ -44,7 +44,7 @@ struct MovieScreen: View {
                 }
             }
             .task {
-                guard ProcessInfo.processInfo.environment["isTest"] != "1" && !viewModel.movies.isEmpty else { return }
+                guard ProcessInfo.processInfo.environment["isTest"] != "1" && viewModel.movies.isEmpty else { return }
                 await viewModel.fetchMovies()
             }
         }
