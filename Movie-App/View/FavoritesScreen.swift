@@ -8,23 +8,29 @@
 import SwiftUI
 
 struct FavoritesScreen: View {
-    @State private var movies: [Movie] = []
+    @StateObject private var viewModel: FavoritesViewModel = FavoritesViewModel()
     
-    @State private var search: String = ""
-    
-    //TODO: load data from local storage
     var body: some View {
         NavigationStack {
-            MovieListView(movies: $movies)
+            MovieListView(movies: .constant(viewModel.displayedMovies))
                 .overlay {
-                    if !search.isEmpty && movies.isEmpty {
-                        Text("There is no \"\(search)\"")
-                    } else if movies.isEmpty {
+                    if !viewModel.search.isEmpty && viewModel.displayedMovies.isEmpty {
+                        Text("There is no \"\(viewModel.search)\"")
+                    } else if viewModel.displayedMovies.isEmpty {
                         Text("No Favorite Movie")
                     }
                 }
-                .searchable(text: $search)
+                .searchable(text: $viewModel.search)
                 .navigationTitle("Favorites")
+                .onAppear {
+                    viewModel.fetchMovies()
+                }
+                .onSubmit(of: .search) {
+                    viewModel.fetchMovies()
+                }
+                .refreshable {
+                    viewModel.fetchMovies()
+                }
         }
     }
 }

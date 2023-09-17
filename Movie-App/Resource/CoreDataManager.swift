@@ -34,8 +34,8 @@ struct CoreDataManager {
         if viewContext.hasChanges {
             do {
                 try viewContext.save()
-            } catch let error as NSError {
-                NSLog("Unresolved error saving context: \(error), \(error.userInfo)")
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }

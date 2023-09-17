@@ -6,8 +6,15 @@
 //
 
 import Foundation
+import CoreData
 
 class MovieViewModel: BaseViewModel {
+    @Published private var coreDataManager = CoreDataManager.shared
+    
+    private var viewContext: NSManagedObjectContext {
+        coreDataManager.viewContext
+    }
+    
     @Published var movie: Movie
     @Published var isSaved: Bool = false
     
@@ -20,7 +27,17 @@ class MovieViewModel: BaseViewModel {
     }
     
     func fetchSaveStatus() -> Bool {
-        false
+        let request = NSFetchRequest<MovieItem>(entityName: "MovieItem")
+        
+        guard
+            let moviesItem = try? viewContext.fetch(request)
+        else {
+            return false
+        }
+        
+        return moviesItem.contains(where: { item in
+            Int(item.id) == movie.id
+        })
     }
     
     func fetchImages() async {
@@ -40,7 +57,19 @@ class MovieViewModel: BaseViewModel {
     }
     
     func save() -> Bool {
-        //TODO: add function
-        false
+        let newItem = MovieItem(context: viewContext)
+        
+        newItem.id = Int64(movie.id)
+        newItem.data = movie.toString()
+        
+        guard viewContext.hasChanges else { return false }
+        
+        do {
+            try viewContext.save()
+            return true
+        } catch {
+            print(error.localizedDescription)
+            return false
+        }
     }
 }

@@ -10,18 +10,42 @@ import SwiftUI
 import CoreData
 
 class FavoritesViewModel: BaseViewModel {
-    @Published private var viewContext = PersistenceController.shared.container.viewContext
+    @Published private var coreDataManager = CoreDataManager.shared
+    
+    private var viewContext: NSManagedObjectContext {
+        coreDataManager.viewContext
+    }
     
     @Published var movies: [Movie] = []
+    
+    override init() {
+        super.init()
+        fetchMovies()
+    }
+    
+    var displayedMovies: [Movie] {
+        movies.filter { movie in
+            (movie.title ?? "").lowercased().contains(search)
+        }
+    }
     @Published var search: String = ""
     
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-    
-    //TODO: load data from local storage
-    func fetchMovies() async {
+    func fetchMovies() {
+        let request = NSFetchRequest<MovieItem>(entityName: "MovieItem")
+        
+        do {
+            let moviesItem = try viewContext.fetch(request)
+            var movies: [Movie] = []
+            
+            for item in moviesItem {
+                if let movie = Movie.decode(item.data) {
+                    movies.append(movie)
+                }
+            }
+            self.movies = movies
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
 
