@@ -30,13 +30,13 @@ class MovieListViewModel: BaseViewModel {
             
             switch type {
             case .nowPlaying:
-                list = try await Fetcher.getNowPlayingMovieList(page: page)
+                list = try await fetcher.getNowPlayingMovieList(page: page)
             case .popular:
-                list = try await Fetcher.getPopularMovieList(page: page)
+                list = try await fetcher.getPopularMovieList(page: page)
             case .topRated:
-                list = try await Fetcher.getTopRatedMovieList(page: page)
+                list = try await fetcher.getTopRatedMovieList(page: page)
             case .upcoming:
-                list = try await Fetcher.getUpcomingMovieList(page: page)
+                list = try await fetcher.getUpcomingMovieList(page: page)
             }
             
             Task { @MainActor in

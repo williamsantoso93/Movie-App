@@ -8,6 +8,8 @@
 import Foundation
 
 class BaseViewModel: ObservableObject {
+    var fetcher: MovieFetcherProtocol = Fetcher()
+    
     @Published private var _isLoading: Bool = false
     var isLoading: Bool {
         get {

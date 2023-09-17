@@ -26,7 +26,7 @@ class SearchViewModel: BaseViewModel {
         
         loading(true)
         do {
-            let list: MovieList = try await Fetcher.searchMovies(by: search, page: page)
+            let list: MovieList = try await fetcher.searchMovies(by: search, page: page)
             
             Task { @MainActor in
                 movies += list.results

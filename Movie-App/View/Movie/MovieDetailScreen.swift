@@ -78,12 +78,14 @@ struct MovieDetailScreen: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             LazyHStack {
                                 ForEach(posters, id:\.self) { image in
-                                    AsyncImage(url: URL(string: image.imageUrl)) { image in
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                    } placeholder: {
-                                        ProgressView()
+                                    if let imageUrl = image.imageUrl {
+                                        AsyncImage(url: URL(string: imageUrl)) { image in
+                                            image
+                                                .resizable()
+                                                .scaledToFill()
+                                        } placeholder: {
+                                            ProgressView()
+                                        }
                                     }
                                 }
                                 .frame(width: 100, height: 150)

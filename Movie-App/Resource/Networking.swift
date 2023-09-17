@@ -66,12 +66,22 @@ class Networking {
     }
 }
 
-class Fetcher {
+protocol MovieFetcherProtocol {
+    func getNowPlayingMovieList(page: Int) async throws -> MovieList
+    func getPopularMovieList(page: Int) async throws -> MovieList
+    func getTopRatedMovieList(page: Int) async throws -> MovieList
+    func getUpcomingMovieList(page: Int) async throws -> MovieList
+    func getMovieDetail(id: Int) async throws -> Movie
+    func getMovieImages(id: Int) async throws -> MovieImages
+    func searchMovies(by keyword: String, page: Int) async throws -> MovieList
+}
+
+class Fetcher: MovieFetcherProtocol {
     static let baseUrl: String = "https://api.themoviedb.org/3"
     static var imageBaseUrl: String = "https://image.tmdb.org/t/p/"
     
-    static func getNowPlayingMovieList(page: Int = 1) async throws -> MovieList {
-        let url = "\(baseUrl)/movie/now_playing"
+    func getNowPlayingMovieList(page: Int = 1) async throws -> MovieList {
+        let url = "\(Fetcher.baseUrl)/movie/now_playing"
         let params: [String: String] = [
             "page": "\(page)",
         ]
@@ -85,8 +95,8 @@ class Fetcher {
         }
     }
     
-    static func getPopularMovieList(page: Int = 1) async throws -> MovieList {
-        let url = "\(baseUrl)/movie/popular"
+    func getPopularMovieList(page: Int = 1) async throws -> MovieList {
+        let url = "\(Fetcher.baseUrl)/movie/popular"
         let params: [String: String] = [
             "page": "\(page)",
         ]
@@ -100,8 +110,8 @@ class Fetcher {
         }
     }
     
-    static func getTopRatedMovieList(page: Int = 1) async throws -> MovieList {
-        let url = "\(baseUrl)/movie/top_rated"
+    func getTopRatedMovieList(page: Int = 1) async throws -> MovieList {
+        let url = "\(Fetcher.baseUrl)/movie/top_rated"
         let params: [String: String] = [
             "page": "\(page)",
         ]
@@ -115,8 +125,8 @@ class Fetcher {
         }
     }
     
-    static func getUpcomingMovieList(page: Int = 1) async throws -> MovieList {
-        let url = "\(baseUrl)/movie/upcoming"
+    func getUpcomingMovieList(page: Int = 1) async throws -> MovieList {
+        let url = "\(Fetcher.baseUrl)/movie/upcoming"
         let params: [String: String] = [
             "page": "\(page)",
         ]
@@ -130,8 +140,8 @@ class Fetcher {
         }
     }
     
-    static func getMovieDetail(id: Int) async throws -> Movie {
-        let url = "\(baseUrl)/movie/\(id)"
+    func getMovieDetail(id: Int) async throws -> Movie {
+        let url = "\(Fetcher.baseUrl)/movie/\(id)"
         
         let result: Result<Movie, RequestError> = await Networking.sendRequest(url: url)
         switch result {
@@ -142,8 +152,8 @@ class Fetcher {
         }
     }
     
-    static func getMovieImages(id: Int) async throws -> MovieImages {
-        let url = "\(baseUrl)/movie/\(id)/images"
+    func getMovieImages(id: Int) async throws -> MovieImages {
+        let url = "\(Fetcher.baseUrl)/movie/\(id)/images"
         let params: [String: String] = [
             "include_image_language": "en",
             "language": "en",
@@ -158,8 +168,8 @@ class Fetcher {
         }
     }
     
-    static func searchMovies(by keyword: String, page: Int = 1) async throws -> MovieList {
-        let url = "\(baseUrl)/search/movie"
+    func searchMovies(by keyword: String, page: Int = 1) async throws -> MovieList {
+        let url = "\(Fetcher.baseUrl)/search/movie"
         let params: [String: String] = [
             "query": keyword,
             "page": "\(page)",

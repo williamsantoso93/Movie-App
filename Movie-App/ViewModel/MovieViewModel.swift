@@ -46,7 +46,7 @@ class MovieViewModel: BaseViewModel {
         
         loading(true)
         do {
-            let movieImages = try await Fetcher.getMovieImages(id: movie.id)
+            let movieImages = try await fetcher.getMovieImages(id: movie.id)
             
             Task { @MainActor in
                 movie.image = movieImages
@@ -79,7 +79,7 @@ class MovieViewModel: BaseViewModel {
     
     func delete() -> Bool {
         guard let movieItem = moviesItem.first(where: { movieItem in
-            Int(movieItem.id) == movie.id
+            return Int(movieItem.id) == movie.id
         }) else { return false }
         
         viewContext.delete(movieItem)
@@ -89,13 +89,4 @@ class MovieViewModel: BaseViewModel {
         
         return true
     }
-    
-    //func deleteMovieItems(offsets: IndexSet) {
-    //    withAnimation {
-    //        offsets.map { movies[$0] }.forEach(viewContext.delete)
-    //
-    //        coreDataManager.save()
-    //        fetch()
-    //    }
-    //    }
 }
