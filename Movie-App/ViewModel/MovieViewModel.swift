@@ -77,7 +77,6 @@ class MovieViewModel: BaseViewModel {
         }
     }
     
-    //TODO: fix error when delete from movie screen
     func delete() -> Bool {
         guard let movieItem = moviesItem.first(where: { movieItem in
             Int(movieItem.id) == movie.id

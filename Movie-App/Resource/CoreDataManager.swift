@@ -26,10 +26,6 @@ struct CoreDataManager {
         viewContext = container.viewContext
     }
     
-    func fetch() {
-        
-    }
-    
     func save() {
         if viewContext.hasChanges {
             do {

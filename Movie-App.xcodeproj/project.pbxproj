@@ -11,7 +11,6 @@
 		7A10DBBA2AB498A50022802E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10DBB92AB498A50022802E /* ContentView.swift */; };
 		7A10DBBC2AB498A70022802E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A10DBBB2AB498A70022802E /* Assets.xcassets */; };
 		7A10DBBF2AB498A70022802E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A10DBBE2AB498A70022802E /* Preview Assets.xcassets */; };
-		7A10DBC12AB498A70022802E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10DBC02AB498A70022802E /* Persistence.swift */; };
 		7A10DBC42AB498A70022802E /* Movie_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A10DBC22AB498A70022802E /* Movie_App.xcdatamodeld */; };
 		7A10DBCE2AB498A70022802E /* Movie_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10DBCD2AB498A70022802E /* Movie_AppTests.swift */; };
 		7A10DBD82AB498A70022802E /* Movie_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A10DBD72AB498A70022802E /* Movie_AppUITests.swift */; };
@@ -57,7 +56,6 @@
 		7A10DBB92AB498A50022802E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7A10DBBB2AB498A70022802E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A10DBBE2AB498A70022802E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		7A10DBC02AB498A70022802E /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		7A10DBC32AB498A70022802E /* Movie_App.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Movie_App.xcdatamodel; sourceTree = "<group>"; };
 		7A10DBC92AB498A70022802E /* Movie-AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Movie-AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A10DBCD2AB498A70022802E /* Movie_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie_AppTests.swift; sourceTree = "<group>"; };
@@ -136,7 +134,6 @@
 				7A57198D2AB6106100946A85 /* ViewModel */,
 				7A10DBEF2AB4A5680022802E /* View */,
 				7A10DBBB2AB498A70022802E /* Assets.xcassets */,
-				7A10DBC02AB498A70022802E /* Persistence.swift */,
 				7A10DBC22AB498A70022802E /* Movie_App.xcdatamodeld */,
 				7A10DBBD2AB498A70022802E /* Preview Content */,
 			);
@@ -358,7 +355,6 @@
 				7A10DBFD2AB4A7BF0022802E /* MovieRowView.swift in Sources */,
 				7A24232E2AB5B3BE005DA640 /* AlertSavedStatusBottomSheet.swift in Sources */,
 				7A5719932AB6140C00946A85 /* SearchViewModel.swift in Sources */,
-				7A10DBC12AB498A70022802E /* Persistence.swift in Sources */,
 				7A10DBBA2AB498A50022802E /* ContentView.swift in Sources */,
 				7A10DBE92AB4995D0022802E /* Networking.swift in Sources */,
 				7A954FE72AB69BD800504928 /* CoreDataManager.swift in Sources */,
