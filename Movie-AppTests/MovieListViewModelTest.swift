@@ -20,6 +20,7 @@ final class MovieListViewModelTest: XCTestCase {
         super.tearDown()
         viewModel = nil
     }
+    
     func test_fetchMovies_forNowPlaying_shouldUpdateMovies() {
         let exp = expectation(description: "Loading Movies")
         
@@ -28,7 +29,10 @@ final class MovieListViewModelTest: XCTestCase {
         Task {
             await viewModel.fetchMovies()
             
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            
             Task { @MainActor in
+                sleep(1)
                 XCTAssertEqual(viewModel.movies.count, 2)
                 
                 exp.fulfill()
@@ -46,7 +50,10 @@ final class MovieListViewModelTest: XCTestCase {
         Task {
             await viewModel.fetchMovies()
             
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            
             Task { @MainActor in
+                sleep(1)
                 XCTAssertEqual(viewModel.movies.count, 2)
                 
                 exp.fulfill()
@@ -64,7 +71,10 @@ final class MovieListViewModelTest: XCTestCase {
         Task {
             await viewModel.fetchMovies()
             
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            
             Task { @MainActor in
+                sleep(1)
                 XCTAssertEqual(viewModel.movies.count, 2)
                 
                 exp.fulfill()
@@ -82,7 +92,10 @@ final class MovieListViewModelTest: XCTestCase {
         Task {
             await viewModel.fetchMovies()
             
+            try await Task.sleep(nanoseconds: 1_000_000_000)
+            
             Task { @MainActor in
+                sleep(1)
                 XCTAssertEqual(viewModel.movies.count, 2)
                 
                 exp.fulfill()

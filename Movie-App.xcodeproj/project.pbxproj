@@ -85,6 +85,8 @@
 		7A7881F82AB6FA3700E42FB2 /* MockFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetcher.swift; sourceTree = "<group>"; };
 		7A7C6FF62AB7025F007B1258 /* SearchViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTest.swift; sourceTree = "<group>"; };
 		7A7C6FF82AB70363007B1258 /* FavoriteViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModelTest.swift; sourceTree = "<group>"; };
+		7A94CDA22AB707EB00F68E75 /* Movie-App.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Movie-App.xctestplan"; sourceTree = "<group>"; };
+		7A94CDA32AB7086500F68E75 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7A954FE62AB69BD800504928 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +118,8 @@
 		7A10DBAB2AB498A50022802E = {
 			isa = PBXGroup;
 			children = (
+				7A94CDA22AB707EB00F68E75 /* Movie-App.xctestplan */,
+				7A94CDA32AB7086500F68E75 /* README.md */,
 				7A10DBB62AB498A50022802E /* Movie-App */,
 				7A10DBCC2AB498A70022802E /* Movie-AppTests */,
 				7A10DBD62AB498A70022802E /* Movie-AppUITests */,

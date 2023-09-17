@@ -71,12 +71,15 @@ class MockFetcher: MovieFetcherProtocol {
                 Movie(id: 10, adult: false, backdropPath: "/backdrop10.jpg", originalLanguage: "en", originalTitle: "Movie 10", overview: "Overview 10", popularity: 1000.0, posterPath: "/poster10.jpg", releaseDate: "2023-10-10", title: "Movie 10", video: false, voteAverage: 9.5, voteCount: 80, image: nil)
             ]
         } else if keyword == "YourSearchQuery" && page == 2 {
-            mockResults = []
+            mockResults = [
+                Movie(id: 1, adult: false, backdropPath: "/backdrop1.jpg", originalLanguage: "en", originalTitle: "Movie 1", overview: "Overview 1", popularity: 123.45, posterPath: "/poster1.jpg", releaseDate: "2023-01-01", title: "Movie 1", video: false, voteAverage: 7.5, voteCount: 100, image: nil),
+                Movie(id: 2, adult: false, backdropPath: "/backdrop2.jpg", originalLanguage: "en", originalTitle: "Movie 2", overview: "Overview 2", popularity: 234.56, posterPath: "/poster2.jpg", releaseDate: "2023-02-02", title: "Movie 2", video: false, voteAverage: 8.0, voteCount: 200, image: nil)
+            ]
         } else {
             mockResults = []
         }
         
-        let mockMovieList = MovieList(page: page, results: mockResults, totalPages: 1, totalResults: mockResults.count)
+        let mockMovieList = MovieList(page: page, results: mockResults, totalPages: 2, totalResults: mockResults.count)
         return mockMovieList
     }
 

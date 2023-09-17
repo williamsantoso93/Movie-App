@@ -1,0 +1,43 @@
+{
+  "configurations" : [
+    {
+      "id" : "F4E429A2-9D98-4627-9D6D-895ED3380327",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "isTest",
+        "value" : "1"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Movie-App.xcodeproj",
+      "identifier" : "7A10DBB32AB498A50022802E",
+      "name" : "Movie-App"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Movie-App.xcodeproj",
+        "identifier" : "7A10DBC82AB498A70022802E",
+        "name" : "Movie-AppTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Movie-App.xcodeproj",
+        "identifier" : "7A10DBD22AB498A70022802E",
+        "name" : "Movie-AppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
